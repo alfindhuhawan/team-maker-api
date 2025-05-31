@@ -24,6 +24,9 @@ jobs:
       - name: Test
         run: go test -v ./...
 
+      - name: Run app to test runtime crash
+        run: ./main
+
   deploy:
     needs: build-test
     if: success()
