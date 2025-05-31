@@ -15,25 +15,25 @@ var DB *mongo.Database
 
 func InitDB() {
 	if config.AppConfig == nil {
-		log.Fatal("Config not loaded. Call LoadConfig first")
+		panic("Config not loaded. Call LoadConfig first")
 	}
 
 	clientOpts := options.Client().ApplyURI(config.AppConfig.MongoURI)
 	client, err := mongo.NewClient(clientOpts)
 	if err != nil {
-		log.Fatalf("Mongo client error: %v", err)
+		panic("Mongo client error: " + err.Error())
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := client.Connect(ctx); err != nil {
-		log.Fatalf("Mongo connect error: %v", err)
+		panic("Mongo connect error: " + err.Error())
 	}
 
 	// Tambahkan ping ke database untuk cek koneksi
 	if err := client.Ping(ctx, nil); err != nil {
-		log.Fatalf("Mongo ping error: %v", err)
+		panic("Mongo ping error: " + err.Error())
 	}
 
 	DB = client.Database(config.AppConfig.MongoDB)
