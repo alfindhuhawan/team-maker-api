@@ -1,0 +1,5 @@
+{
+    "mongo_uri": "mongodb://localhost:27017",
+    "mongo_db": "team_maker_api",
+    "jwt_secret": "your_secret_key"
+}

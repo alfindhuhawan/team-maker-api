@@ -8,12 +8,11 @@ import (
 	"team-maker-api/delivery/routes"
 	"team-maker-api/repository"
 	"team-maker-api/usecase"
-	"team-maker-api/utils"
 )
 
 func main() {
 	config.LoadConfig("config.json")
-	utils.InitDB()
+	// utils.InitDB()
 
 	userRepo := repository.NewUserRepository()
 	authUsecase := usecase.NewAuthUsecase(userRepo)
