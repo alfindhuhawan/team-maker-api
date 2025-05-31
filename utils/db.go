@@ -31,6 +31,11 @@ func InitDB() {
 		log.Fatalf("Mongo connect error: %v", err)
 	}
 
+	// Tambahkan ping ke database untuk cek koneksi
+	if err := client.Ping(ctx, nil); err != nil {
+		log.Fatalf("Mongo ping error: %v", err)
+	}
+
 	DB = client.Database(config.AppConfig.MongoDB)
 	log.Println("MongoDB connected")
 }
