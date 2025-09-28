@@ -6,6 +6,7 @@ import (
 	"team-maker-api/domain_teammakerappservice/usecase/getalluser"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneuser"
+	"team-maker-api/domain_teammakerappservice/usecase/runcreatecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
@@ -27,18 +28,19 @@ type Controller struct {
 	Log    logger.Logger
 	Helper helper.HTTPHelper
 
-	GetAllPlayerInport     getallplayer.Inport
-	GetAllUserInport       getalluser.Inport
-	GetOnePlayerInport     getoneplayer.Inport
-	GetOneUserInport       getoneuser.Inport
-	RunCreatePlayerInport  runcreateplayer.Inport
-	RunCreateTeamInport    runcreateteam.Inport
-	RunCreateUserInport    runcreateuser.Inport
-	RunLoginUserInport     runloginuser.Inport
-	RunSaveTeamInport      runsaveteam.Inport
-	RunUpdatePlayerInport  runupdateplayer.Inport
-	RunUpdateUserInport    runupdateuser.Inport
-	GetAllPlayerListInport getallplayerlist.Inport
+	GetAllPlayerInport      getallplayer.Inport
+	GetAllUserInport        getalluser.Inport
+	GetOnePlayerInport      getoneplayer.Inport
+	GetOneUserInport        getoneuser.Inport
+	RunCreatePlayerInport   runcreateplayer.Inport
+	RunCreateTeamInport     runcreateteam.Inport
+	RunCreateUserInport     runcreateuser.Inport
+	RunLoginUserInport      runloginuser.Inport
+	RunSaveTeamInport       runsaveteam.Inport
+	RunUpdatePlayerInport   runupdateplayer.Inport
+	RunUpdateUserInport     runupdateuser.Inport
+	GetAllPlayerListInport  getallplayerlist.Inport
+	RunCreateCriteriaInport runcreatecriteria.Inport
 }
 
 // RegisterRouter registering all the router
@@ -81,6 +83,9 @@ func (r *Controller) RegisterRouter() {
 	// Team
 	public.POST("/runcreateteam", r.authorized(), r.runCreateTeamHandler(r.RunCreateTeamInport))
 	public.POST("/runsaveteam", r.authorized(), r.runSaveTeamHandler(r.RunSaveTeamInport))
+
+	// Criteria
+	public.POST("/criteria", r.authorized(), r.runCreateCriteriaHandler(r.RunCreateCriteriaInport))
 
 	// login
 	public.POST("/login", r.authorized(), r.runLoginUserHandler(r.RunLoginUserInport))

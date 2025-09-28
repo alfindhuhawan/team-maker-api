@@ -18,6 +18,7 @@ type gateway struct {
 	*prod.UserImpl
 	*prod.PlayerImpl
 	*prod.TeamImpl
+	*prod.CriteriaImpl
 }
 
 func NewGateway(log logger.Logger, appData driver.ApplicationData, cfg *config.Config, pub messaging.Publisher) *gateway {
@@ -46,15 +47,6 @@ func NewGateway(log logger.Logger, appData driver.ApplicationData, cfg *config.C
 		UserImpl:             &prod.UserImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
 		PlayerImpl:           &prod.PlayerImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
 		TeamImpl:             &prod.TeamImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
-		// AdminHubImpl:          &prod.AdminHubImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
-		// ShipmentImpl:          &prod.ShipmentImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
-		// InternalMemberImpl:    &prod.InternalMemberImpl{MongoWithTransaction: masterMwt, Log: log, DbName: dbMasterName},
-		// RedisImpl:             &prod.RedisImpl{Log: log, Cfg: cfg, CacheClient: cacheClient},
-		// ValidationImpl:        &prod.ValidationImpl{Log: log, Cfg: cfg},
-		// MessagePublisherImpl:  &prod.MessagePublisherImpl{Log: log, Publisher: pub, AppData: appData},
-		// AssignmentCourierImpl: &prod.AssignmentCourierImpl{Log: log, MongoWithTransaction: mwt, DbName: dbName},
-		// DownloadListImpl:      &prod.DownloadListImpl{Log: log, MongoWithTransaction: masterMwt, DbName: dbMasterName},
-		// GCSImpl:               &prod.GCSImpl{Log: log, Cfg: cfg},
-		// AirpaxCloudImpl:       &prod.AirpaxCloudImpl{Log: log, Cfg: cfg},
+		CriteriaImpl:         &prod.CriteriaImpl{MongoWithTransaction: mwt, Log: log, DbName: dbName},
 	}
 }

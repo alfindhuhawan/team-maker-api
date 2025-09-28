@@ -11,4 +11,5 @@ const (
 	CollectionDownloadList      = "download_lists"
 	CollectionUser              = "users"
 	CollectionPlayer            = "players"
+	CollectionCriteria          = "criterias"
 )

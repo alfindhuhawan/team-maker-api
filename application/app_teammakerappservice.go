@@ -9,6 +9,7 @@ import (
 	"team-maker-api/domain_teammakerappservice/usecase/getalluser"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneuser"
+	"team-maker-api/domain_teammakerappservice/usecase/runcreatecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
@@ -62,21 +63,22 @@ func NewAppTeamMaker() func() driver.RegistryContract {
 		return &appteammaker{
 			httpHandler: &httpHandler,
 			controller: &restapi.Controller{
-				Log:                    log,
-				Config:                 cfg,
-				Router:                 httpHandler.Router,
-				GetAllPlayerInport:     getallplayer.NewUsecase(datasource),
-				GetAllUserInport:       getalluser.NewUsecase(datasource),
-				GetOnePlayerInport:     getoneplayer.NewUsecase(datasource),
-				GetOneUserInport:       getoneuser.NewUsecase(datasource),
-				RunCreatePlayerInport:  runcreateplayer.NewUsecase(datasource),
-				RunCreateTeamInport:    runcreateteam.NewUsecase(datasource),
-				RunCreateUserInport:    runcreateuser.NewUsecase(datasource),
-				RunLoginUserInport:     runloginuser.NewUsecase(datasource),
-				RunSaveTeamInport:      runsaveteam.NewUsecase(datasource),
-				RunUpdatePlayerInport:  runupdateplayer.NewUsecase(datasource),
-				RunUpdateUserInport:    runupdateuser.NewUsecase(datasource),
-				GetAllPlayerListInport: getallplayerlist.NewUsecase(datasource),
+				Log:                     log,
+				Config:                  cfg,
+				Router:                  httpHandler.Router,
+				GetAllPlayerInport:      getallplayer.NewUsecase(datasource),
+				GetAllUserInport:        getalluser.NewUsecase(datasource),
+				GetOnePlayerInport:      getoneplayer.NewUsecase(datasource),
+				GetOneUserInport:        getoneuser.NewUsecase(datasource),
+				RunCreatePlayerInport:   runcreateplayer.NewUsecase(datasource),
+				RunCreateTeamInport:     runcreateteam.NewUsecase(datasource),
+				RunCreateUserInport:     runcreateuser.NewUsecase(datasource),
+				RunLoginUserInport:      runloginuser.NewUsecase(datasource),
+				RunSaveTeamInport:       runsaveteam.NewUsecase(datasource),
+				RunUpdatePlayerInport:   runupdateplayer.NewUsecase(datasource),
+				RunUpdateUserInport:     runupdateuser.NewUsecase(datasource),
+				GetAllPlayerListInport:  getallplayerlist.NewUsecase(datasource),
+				RunCreateCriteriaInport: runcreatecriteria.NewUsecase(datasource),
 			},
 		}
 	}
