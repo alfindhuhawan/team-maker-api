@@ -1,5 +1,76 @@
 {
-    "mongo_uri": "mongodb://localhost:27017",
-    "mongo_db": "team_maker_api",
-    "jwt_secret": "your_secret_key"
+    "app": {
+      "name": "team-maker-api",
+      "debug": true
+    },
+    "token": "Int3rnAlUs3rM4n4g3m3nt!",
+    "jwt_secret_key": "1ccd1271e18bccb5b1958e7d22db0821f12829d4bd12e5daa0f54f3937d4d45c7deabd0a6f2aec2daaabba928100c3a0930b1075c697a86ac9fd48dcbcb6cefe",
+    "database": {
+      "mongodb": {
+        "host": "localhost:27017",
+        "database": "team_maker_db",
+        "username": "",
+        "password": ""
+      }
+    },
+    "cache": {
+        "redis": {
+            "address": "localhost",
+            "port": 6379,
+            "db": 0,
+            "password": "",
+            "time_duration": 15,
+            "time_duration_setting" : 10
+        }
+    },
+    "message_broker": {
+        "rabbitmq": {
+            "address": "localhost",
+            "port": 5672,
+            "username": "guest",
+            "password": "guest"
+        }
+    },
+    "application_external": {
+        "airpax_cloud": {
+            "upload": "https://qa-cloud-api.paxel.co/api/v1/file-save",
+            "download":"https://qa-cloud-api.paxel.co/api/v1/file-blob-name/",
+            "provider": "gcs",
+            "bucket_name": "qa-paxel",
+            "folder": "operation-dashboard",
+            "authorization": "046b05b3a79dd1840bccbd1ee10325a3ef33c1d17c3bb60d18e3cfe07a5b3f86"
+        }
+    },
+    "aws": {
+      "aws_endpoint": "s3.amazonaws.com/",
+      "aws_key": "AKIAIJGE3KGNUUDTMLSA",
+      "aws_secret": "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",
+      "aws_region": "us-east-1",
+      "s3_bucket": "paxeldevenv",
+      "s3_url": "https://s3.amazonaws.com/paxeldevenv/"
+    },
+    "application_server": {
+      "app_team_maker_api_service": {
+        "port": 8080
+      }
+    },
+    "gcs": {
+        "gcs_key": "GOOG1EP243XH2ABBZFLZGTJR73MDPV7M6CX6YWK7CCTYDRA6W3JT2XNA2J2LI",
+        "gcs_secret": "Bwcl+DrFFdojmRJD5vKNPq7Y5P5aMQPTHd/jigl6",
+        "gcs_region": "auto",
+        "gcs_bucket": "dev-paxel",
+        "gcs_url": "https://storage.googleapis.com/",
+        "gcs_endpoint": "storage.googleapis.com",
+        "gcs_folder": "operation-dashboard"
+    },
+    "auth_key": {
+      "jwt_secret": "b7adb0635e72a6404248527ce300ac566c9d83fca5cdfddb48c6dde9cc9bc20e",
+      "key_config": "kdnskrydkaqpld9352md93js53kd01m2"
+    },
+    "exception_service_type": ["INSTANT GOSEND", "INSTANT MULTIDROP", "PAXEL INSTANT", "PAXEL BIG", "PAXEL CARGO", "paxel_xl", "paxel_cargo"],
+    "cloud_google": {
+      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDdwa5vODSVyoUv\n8lsomqh4wkm5sQNOCeovKPu1GMP13yy98G/n8ldmNqJyeTiiSPq/EY3+pZKWWTwR\nQZb9Y9eW6F25Spqidwet0eVYXRtJj5UGiXCFSxWnPikthoOLCBhbftfBOQvGbAa2\niYApmqeqSAZ1Z04hGvK4tfGzScu+VneJClDQCNlby2DvlCwgvzoi2YuHly4VtZop\nZmm9ES1vxw8Gejhmu4dyVuGPXrl1vNdy2laIBd2oFKhDFzIJznoXUgf+dCdm/P51\nyRCfoIp5ywteRFqL9hkB5l8zRQS+ipba9QM/Vf57fzgAI/wE04V+qNz54bHnl9x2\nU0ld0yofAgMBAAECggEAP/anUWZVaKVvUFqoJ6igkqB78odX7DEY7vxzyhM4Jtn2\nRl0tcippQk7dAYbsqobBaM5v9jUc+KgJlvKj0jfzzg/9RL57pwQNX3pNHHVSsx+q\nvSV0osX7G2/nIb4MgFRX7kBCjHXfax7quskjghydYxT+Y+vl0c+7lkLI0k2laqNt\nmMDqSRlFi+ows/jQ7BmB92ZewAmZ/Gd1y3Fjnv0jy2tiFKZocUc31+woYcbN/+dv\niBMuihx6UU3mAjBQ90SWFHtQBa1m+k1IeELtFQmxTjJdDtHzUtqTmqftTBesTtoe\nBVGqEvgecIieeH8lCZAoerIDArXVedOoeP2PK8ZniQKBgQD7BKfTDCpWK1qc9kZN\nXLKdMCmsw4zCE20t7Yt5i6bWpnzPMm3ER7bzoeCyB0n6RZ8y62u62VzEsRkA9VJ2\neV3U6EZzw9PXmuNnABFqo5wW7iN6OzFgV26FwBZNqGBkbNxZpQBpsESEGyfLpOZw\nw1n/MVDKrcU6ZWpchRvEJhgNqQKBgQDiKFtTp5XA64bFOyky2GlL/FFh4puqHxFx\nx+AEDEWKUIeK4xFAzmW8dcm+zhKfqj/YVelBATVZ3Pw+wvQtNiGiQDtpNGlHoN5v\nOX0ZgkmG3YevPUrPneXpoLYPlCEipQdbZdUUyWZbTs9a8+jqqNys2k0IFVILif1r\ngu0174IGhwKBgEeVB0rPAE+8Y0W5kUjEc4cR0gCbb0t1AMCFKi4KHhS+O39WsSi1\nDr4hXpNGMtl0+zYpHnqVO7g3jJrSWqbAa3qollay9HlaiRi5Uz4m0/9R/7n+oVEI\n/dKUeYfByWM6DAhgXmLFSnSlzc5sAu8LNmHorVJvBXxmqVMi/k0MU/WpAoGAdZnk\nu6B2d+ZBo4f7CWyNfKzNKOhsZ89WA+OasqAq/RyZDvi6fQeW0aQyb1y7RHmET5uE\n+n+FXaBTLtOzo1r1rGhYPIG7iTq20AGF8uDUGSRTLSXjJAkIiC9A3OL7RAeqxrUy\nU2fTKQHXQ4V4BaYfcmbmDaEAk+2CcQiZDyXnaDsCgYEAtsf0HSML3BhiLoCusxp2\n/mDFU2mO1fAtCSo3/+rynuXZPeIVHBTojZtOK2XD6LvgaooJo7kUYZN2EVuwvAKY\nWEWIv6urrHb1N1d8Y39tG3zOtrXfMiGs8bRzKP2QRNzXDhAKTtoJ4glJaJP8Ux9e\nqiDllvP1lB0qUZDJNEL4GGg=\n-----END PRIVATE KEY-----\n",
+      "client_email": "cicd-sa@dev-qa-project-328909.iam.gserviceaccount.com",
+      "expire_in_minute": 20
+    }
 }

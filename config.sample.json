@@ -1,0 +1,70 @@
+{
+    "token": "",
+    "jwt_secret_key": "",
+    "database": {
+        "mongodb": {
+            "host": "",
+            "database": "",
+            "username": "",
+            "password": ""
+        },
+        "master_db": {
+            "host": "",
+            "database": "",
+            "username": "",
+            "password": ""
+        }
+    },
+    "cache": {
+        "redis": {
+            "address": "localhost",
+            "port": 6379,
+            "db": 0,
+            "password": "",
+            "time_duration": 15,
+            "time_duration_setting" : 10
+        }
+    },
+    "message_broker": {
+        "rabbitmq": {
+            "address": "localhost",
+            "port": 5672,
+            "username": "",
+            "password": ""
+        }
+    },
+    "application_server": {
+        "app_team_maker_api_service": {
+          "port": 8080
+        }
+      },
+    "auth_key": {
+        "jwt_secret" : "",
+        "key_config" : ""
+    },
+    "exception_service_type": ["INSTANT GOSEND", "INSTANT MULTIDROP", "PAXEL INSTANT", "PAXEL BIG", "PAXEL CARGO", "paxel_xl", "paxel_cargo"],
+    "gcs": {
+        "gcs_key": "",
+        "gcs_secret": "",
+        "gcs_region": "auto",
+        "gcs_bucket": "paxelmarket-v3-bucket",
+        "gcs_url": "storage.googleapis.com",
+        "gcs_endpoint": "https://storage.googleapis.com/",
+        "gcs_folder": "operation-dashboard"
+    },
+    "application_external": {
+        "airpax_cloud": {
+            "upload": "https://dev-cloud-api.paxel.co/api/v1/file-save",
+            "download":"https://dev-cloud-api.paxel.co/api/v1/file-blob-name/",
+            "provider": "gcs",
+            "bucket_name": "dev-paxel",
+            "folder": "operation-dashboard",
+            "authorization": ""
+        }
+    },
+    "cloud_google": {
+        "private_key": "",
+        "client_email": "",
+        "expire_in_minute": 20
+    }
+}

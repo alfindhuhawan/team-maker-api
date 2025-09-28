@@ -1,36 +1,31 @@
 package main
 
 import (
-	"log"
-	"team-maker-api/config"
-	"team-maker-api/delivery"
-	"team-maker-api/delivery/handler"
-	"team-maker-api/delivery/routes"
-	"team-maker-api/repository"
-	"team-maker-api/usecase"
-	"team-maker-api/utils"
+	"flag"
+	"fmt"
+	"team-maker-api/application"
+	"team-maker-api/shared/driver"
+	"team-maker-api/shared/infrastructure/config"
 )
 
 func main() {
-	config.LoadConfig("config.json")
-	utils.InitDB()
 
-	userRepo := repository.NewUserRepository()
-	authUsecase := usecase.NewAuthUsecase(userRepo)
+	// test every config is ready
+	config.ReadConfig()
 
-	authHandler := handler.NewAuthHandler(authUsecase)
-	// userHandler := handler.NewUserHandler()
+	appMap := map[string]func() driver.RegistryContract{
+		"appteammakerapi": application.NewAppTeamMaker(),
+	}
+	flag.Parse()
 
-	handlers := &delivery.Handlers{
-		Auth: authHandler,
-		// User: userHandler,
-		// tambah handler lain di sini
+	app, exist := appMap[flag.Arg(0)]
+	if exist {
+		driver.Run(app())
+	} else {
+		fmt.Println("You may try 'go run main.go <app_name>' :")
+		for appName := range appMap {
+			fmt.Printf(" - %s\n", appName)
+		}
 	}
 
-	r := routes.SetupRouter(handlers)
-
-	log.Println("Server running at :8080")
-	if err := r.Run(":8080"); err != nil {
-		log.Fatal(err)
-	}
 }
