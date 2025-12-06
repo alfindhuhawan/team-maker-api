@@ -32,16 +32,22 @@ func (r *PlayerImpl) SavePlayer(ctx context.Context, obj *entity.Player) error {
 	return nil
 }
 
-func (r *PlayerImpl) UpdatePlayer(ctx context.Context, userID primitive.ObjectID, obj *repository.UpdatePlayerRequest) error {
+func (r *PlayerImpl) UpdatePlayer(ctx context.Context, userID string, obj *repository.UpdatePlayerRequest) error {
 	coll := r.MongoClient.Database(r.DbName).Collection(CollectionPlayer)
 
+	// convert user id to string
+	oid, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return fmt.Errorf("invalid player id: %w", err)
+	}
+
 	criteria := bson.M{}
-	criteria["_id"] = userID
+	criteria["_id"] = oid
 
 	updated := bson.M{}
 	updated["$set"] = obj
 
-	_, err := coll.UpdateOne(ctx, criteria, updated)
+	_, err = coll.UpdateOne(ctx, criteria, updated)
 	if err != nil {
 		return err
 	}
@@ -49,7 +55,25 @@ func (r *PlayerImpl) UpdatePlayer(ctx context.Context, userID primitive.ObjectID
 	return nil
 }
 
-func (r *PlayerImpl) FindOnePlayer(ctx context.Context, filterBy enum.FilterByEnum, filter interface{}) (*entity.Player, error) {
+func (r *PlayerImpl) DeletePlayer(ctx context.Context, userID string) error {
+	coll := r.MongoClient.Database(r.DbName).Collection(CollectionPlayer)
+
+	oid, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return fmt.Errorf("invalid player id: %w", err)
+	}
+
+	criteria := bson.M{"_id": oid}
+
+	_, err = coll.DeleteOne(ctx, criteria)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *PlayerImpl) FindOnePlayer(ctx context.Context, filterBy enum.FilterByEnum, filter repository.FilterPlayer) (*entity.Player, error) {
 	var obj entity.Player
 
 	coll := r.MongoClient.Database(r.DbName).Collection(CollectionPlayer)
@@ -57,9 +81,21 @@ func (r *PlayerImpl) FindOnePlayer(ctx context.Context, filterBy enum.FilterByEn
 	criteria := bson.M{}
 
 	if filterBy == enum.IDFilterByEnum {
-		criteria["_id"] = filter
+		if filter.ID != "" {
+			oid, err := primitive.ObjectIDFromHex(filter.ID)
+			if err != nil {
+				return nil, fmt.Errorf("invalid player id: %w", err)
+			}
+			criteria["_id"] = oid
+		}
 	} else if filterBy == enum.NameFilterByEnum {
-		criteria["name"] = filter
+		if filter.Name != "" {
+			criteria["name"] = filter.Name
+		}
+	} else if filterBy == enum.PlayerCodeFilterByEnum {
+		if filter.PlayerCode != "" {
+			criteria["player_code"] = filter.PlayerCode
+		}
 	}
 
 	err := coll.FindOne(ctx, criteria).Decode(&obj)
@@ -90,6 +126,10 @@ func (r *PlayerImpl) FindAllPlayer(ctx context.Context, req repository.FindAllPl
 		criteria["name"] = primitive.Regex{Pattern: string(req.Name), Options: "i"}
 	}
 
+	if req.PlayerRank != "" {
+		criteria["player_rank"] = req.PlayerRank
+	}
+
 	skip := req.Size * (req.Page - 1)
 	limit := req.Size
 
@@ -104,7 +144,7 @@ func (r *PlayerImpl) FindAllPlayer(ctx context.Context, req repository.FindAllPl
 		return nil, 0, err
 	}
 
-	sort := bson.M{"updated_at": -1}
+	sort := bson.M{"created_at": -1}
 
 	findOpts := options.FindOptions{
 		Limit: &limit,

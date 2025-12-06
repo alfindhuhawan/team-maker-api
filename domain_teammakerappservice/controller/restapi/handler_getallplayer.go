@@ -10,6 +10,7 @@ import (
 	"team-maker-api/shared/infrastructure/logger"
 	"team-maker-api/shared/infrastructure/util"
 	"team-maker-api/shared/model/entity"
+	"team-maker-api/shared/model/enum"
 	"team-maker-api/shared/model/payload"
 )
 
@@ -17,9 +18,10 @@ import (
 func (r *Controller) getAllPlayerHandler(inputPort getallplayer.Inport) gin.HandlerFunc {
 
 	type request struct {
-		Page int64  `form:"page,omitempty,default=0"`
-		Size int64  `form:"size,omitempty,default=0"`
-		Name string `form:"name,omitempty"`
+		Page       int64               `form:"page,omitempty,default=0"`
+		Size       int64               `form:"size,omitempty,default=0"`
+		Name       string              `form:"name,omitempty"`
+		PlayerRank enum.PlayerRankEnum `form:"player_rank,omitempty"`
 	}
 
 	type response struct {
@@ -44,6 +46,7 @@ func (r *Controller) getAllPlayerHandler(inputPort getallplayer.Inport) gin.Hand
 		req.Page = jsonReq.Page
 		req.Size = jsonReq.Size
 		req.Name = jsonReq.Name
+		req.PlayerRank = jsonReq.PlayerRank
 
 		r.Log.Info(ctx, util.MustJSON(req))
 

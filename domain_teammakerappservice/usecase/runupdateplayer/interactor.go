@@ -2,10 +2,9 @@ package runupdateplayer
 
 import (
 	"context"
+	"fmt"
 	"team-maker-api/shared/model/enum"
 	"team-maker-api/shared/model/repository"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //go:generate mockery --name Outport -output mocks/
@@ -32,19 +31,45 @@ func (r *runUpdatePlayerInteractor) Execute(ctx context.Context, req InportReque
 	res := &InportResponse{}
 
 	// Check username first
-	playerID, err := primitive.ObjectIDFromHex(req.PlayerID)
+	// playerID, err := primitive.ObjectIDFromHex(req.PlayerID)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	playerDataOld, err := r.outport.FindOnePlayer(ctx, enum.IDFilterByEnum, repository.FilterPlayer{
+		ID: req.PlayerID,
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = r.outport.FindOnePlayer(ctx, enum.IDFilterByEnum, playerID)
-	if err != nil {
-		return nil, err
-	}
+	// convert user id to string
+	// playerID, err := primitive.ObjectIDFromHex(req.PlayerID)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("invalid player id: %w", err)
+	// }
 
-	err = r.outport.UpdatePlayer(ctx, playerID, &repository.UpdatePlayerRequest{
+	// must check its from the same id or not
+	// fmt.Println("playerDataOld.ID >>")
+	// fmt.Println(playerDataOld.ID)
+	// fmt.Println("playerID >>")
+	// fmt.Println(playerID)
+	if playerDataOld.PlayerCode != req.PlayerCode {
+		playerExist, _ := r.outport.FindOnePlayer(ctx, enum.PlayerCodeFilterByEnum, repository.FilterPlayer{
+			PlayerCode: req.PlayerCode,
+		})
+		if playerExist != nil {
+			return nil, fmt.Errorf("player code has been used")
+		}
+	}
+	// if playerDataOld.ID != playerID {
+	// 	fmt.Println("masuk sini")
+	// }
+
+	err = r.outport.UpdatePlayer(ctx, req.PlayerID, &repository.UpdatePlayerRequest{
 		Name:       req.Name,
-		PlayerRank: string(req.PlayerRank),
+		PlayerRank: req.PlayerRank,
+		PlayerCode: req.PlayerCode,
 		UpdatedAt:  req.TimeNow,
 		UpdatedBy:  "-", // TODO : must change when auth have been created
 	})
