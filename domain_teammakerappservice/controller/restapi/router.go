@@ -10,6 +10,7 @@ import (
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
+	"team-maker-api/domain_teammakerappservice/usecase/rundeleteplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runloginuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runsaveteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runupdateplayer"
@@ -41,6 +42,7 @@ type Controller struct {
 	RunUpdateUserInport     runupdateuser.Inport
 	GetAllPlayerListInport  getallplayerlist.Inport
 	RunCreateCriteriaInport runcreatecriteria.Inport
+	RunDeletePlayerInport   rundeleteplayer.Inport
 }
 
 // RegisterRouter registering all the router
@@ -79,6 +81,7 @@ func (r *Controller) RegisterRouter() {
 	public.GET("/player/:player_id", r.authorized(), r.getOnePlayerHandler(r.GetOnePlayerInport))
 	public.POST("/player", r.authorized(), r.runCreatePlayerHandler(r.RunCreatePlayerInport))
 	public.PUT("/player/:player_id", r.authorized(), r.runUpdatePlayerHandler(r.RunUpdatePlayerInport))
+	public.DELETE("/player/:player_id", r.authorized(), r.runDeletePlayerHandler(r.RunDeletePlayerInport))
 
 	// Team
 	public.POST("/runcreateteam", r.authorized(), r.runCreateTeamHandler(r.RunCreateTeamInport))

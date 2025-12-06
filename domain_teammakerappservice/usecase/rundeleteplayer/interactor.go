@@ -1,4 +1,4 @@
-package getoneplayer
+package rundeleteplayer
 
 import (
 	"context"
@@ -8,35 +8,34 @@ import (
 
 //go:generate mockery --name Outport -output mocks/
 
-type getOnePlayerInteractor struct {
+type runDeletePlayerInteractor struct {
 	outport Outport
 }
 
 // NewUsecase is constructor for create default implementation of usecase
 func NewUsecase(outputPort Outport) Inport {
-	return &getOnePlayerInteractor{
+	return &runDeletePlayerInteractor{
 		outport: outputPort,
 	}
 }
 
 // Execute the usecase
-func (r *getOnePlayerInteractor) Execute(ctx context.Context, req InportRequest) (*InportResponse, error) {
-
-	err := req.Validate()
-	if err != nil {
-		return nil, err
-	}
+func (r *runDeletePlayerInteractor) Execute(ctx context.Context, req InportRequest) (*InportResponse, error) {
 
 	res := &InportResponse{}
 
-	dataUser, err := r.outport.FindOnePlayer(ctx, enum.IDFilterByEnum, repository.FilterPlayer{
+	// validation : first check the player exist or not
+	_, err := r.outport.FindOnePlayer(ctx, enum.IDFilterByEnum, repository.FilterPlayer{
 		ID: req.PlayerID,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	res.Item = dataUser
+	err = r.outport.DeletePlayer(ctx, req.PlayerID)
+	if err != nil {
+		return nil, err
+	}
 
 	return res, nil
 }

@@ -29,9 +29,10 @@ func (r *getAllPlayerInteractor) Execute(ctx context.Context, req InportRequest)
 	res := &InportResponse{}
 
 	dataPlayers, count, err := r.outport.FindAllPlayer(ctx, repository.FindAllPlayerRequest{
-		Page: req.Page,
-		Size: req.Size,
-		Name: req.Name,
+		Page:       req.Page,
+		Size:       req.Size,
+		Name:       req.Name,
+		PlayerRank: req.PlayerRank,
 	})
 	if err != nil {
 		return nil, err

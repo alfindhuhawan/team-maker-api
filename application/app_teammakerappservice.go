@@ -13,6 +13,7 @@ import (
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
+	"team-maker-api/domain_teammakerappservice/usecase/rundeleteplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runloginuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runsaveteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runupdateplayer"
@@ -79,6 +80,7 @@ func NewAppTeamMaker() func() driver.RegistryContract {
 				RunUpdateUserInport:     runupdateuser.NewUsecase(datasource),
 				GetAllPlayerListInport:  getallplayerlist.NewUsecase(datasource),
 				RunCreateCriteriaInport: runcreatecriteria.NewUsecase(datasource),
+				RunDeletePlayerInport:   rundeleteplayer.NewUsecase(datasource),
 			},
 		}
 	}

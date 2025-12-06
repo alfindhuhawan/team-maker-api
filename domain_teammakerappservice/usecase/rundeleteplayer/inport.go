@@ -1,9 +1,7 @@
-package getallplayer
+package rundeleteplayer
 
 import (
 	"context"
-	"team-maker-api/shared/model/entity"
-	"team-maker-api/shared/model/enum"
 )
 
 // mirza here
@@ -15,18 +13,9 @@ type Inport interface {
 
 // InportRequest is request payload to run the usecase
 type InportRequest struct {
-	Page       int64
-	Size       int64
-	Name       string
-	PlayerRank enum.PlayerRankEnum
+	PlayerID string
 }
 
 // InportResponse is response payload after running the usecase
 type InportResponse struct {
-	Count int64
-	Items []*entity.Player
-}
-
-func (r InportRequest) Validate() error {
-	return nil
 }

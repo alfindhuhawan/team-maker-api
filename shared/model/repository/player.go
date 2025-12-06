@@ -5,8 +5,6 @@ import (
 	"team-maker-api/shared/model/entity"
 	"team-maker-api/shared/model/enum"
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type SavePlayerRepo interface {
@@ -14,11 +12,11 @@ type SavePlayerRepo interface {
 }
 
 type UpdatePlayerRepo interface {
-	UpdatePlayer(ctx context.Context, userID primitive.ObjectID, obj *UpdatePlayerRequest) error
+	UpdatePlayer(ctx context.Context, userID string, obj *UpdatePlayerRequest) error
 }
 
 type FindOnePlayerRepo interface {
-	FindOnePlayer(ctx context.Context, filterBy enum.FilterByEnum, filter interface{}) (*entity.Player, error)
+	FindOnePlayer(ctx context.Context, filterBy enum.FilterByEnum, filterPlayer FilterPlayer) (*entity.Player, error)
 }
 
 type FindAllPlayerRepo interface {
@@ -29,19 +27,31 @@ type FindAllPlayerListRepo interface {
 	FindAllPlayerList(ctx context.Context, req *FindAllPlayerListRequest) ([]*entity.Player, error)
 }
 
+type DeletePlayerRepo interface {
+	DeletePlayer(ctx context.Context, userID string) error
+}
+
 type FindAllPlayerRequest struct {
-	Page int64  `form:"page,omitempty,default=1"`
-	Size int64  `form:"size,omitempty,default=30"`
-	Name string `form:"name,omitempty"`
+	Page       int64               `form:"page,omitempty,default=1"`
+	Size       int64               `form:"size,omitempty,default=30"`
+	Name       string              `form:"name,omitempty"`
+	PlayerRank enum.PlayerRankEnum `form:"player_rank,omitempty"`
 }
 
 type UpdatePlayerRequest struct {
-	Name       string    `json:"name" bson:"name"`
-	PlayerRank string    `json:"player_rank" bson:"player_rank"`
-	UpdatedAt  time.Time `json:"updated_at" bson:"updated_at"`
-	UpdatedBy  string    `json:"updated_by" bson:"updated_by"`
+	Name       string              `json:"name" bson:"name"`
+	PlayerRank enum.PlayerRankEnum `json:"player_rank" bson:"player_rank"`
+	PlayerCode string              `json:"player_code" bson:"player_code"`
+	UpdatedAt  time.Time           `json:"updated_at" bson:"updated_at"`
+	UpdatedBy  string              `json:"updated_by" bson:"updated_by"`
 }
 
 type FindAllPlayerListRequest struct {
 	PlayerIDs []string
+}
+
+type FilterPlayer struct {
+	ID         string
+	Name       string
+	PlayerCode string
 }
