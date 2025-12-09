@@ -1,8 +1,8 @@
-package runcreatecriteria
+package getonecriteria
 
 import (
 	"context"
-	"time"
+	"team-maker-api/shared/model/entity"
 )
 
 // mirza here
@@ -14,15 +14,12 @@ type Inport interface {
 
 // InportRequest is request payload to run the usecase
 type InportRequest struct {
-	Title string
-	// Rank        []string
-	// Rule        []string
-	Description string
-	Now         time.Time
+	CriteriaID string
 }
 
 // InportResponse is response payload after running the usecase
 type InportResponse struct {
+	Item *entity.Criteria
 }
 
 func (r InportRequest) Validate() error {

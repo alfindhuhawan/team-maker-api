@@ -30,16 +30,21 @@ func (r *CriteriaImpl) SaveCriteria(ctx context.Context, obj *entity.Criteria) e
 	return nil
 }
 
-func (r *CriteriaImpl) FindOneCriteria(ctx context.Context, id string) (*entity.Criteria, error) {
+func (r *CriteriaImpl) FindOneCriteria(ctx context.Context, criteriaID string) (*entity.Criteria, error) {
 	var obj entity.Criteria
 
 	coll := r.MongoClient.Database(r.DbName).Collection(CollectionCriteria)
 
 	criteria := bson.M{}
 
-	criteria["_id"] = bson.ObjectId(id)
+	oid, err := primitive.ObjectIDFromHex(criteriaID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid player id: %w", err)
+	}
 
-	err := coll.FindOne(ctx, criteria).Decode(&obj)
+	criteria["_id"] = oid
+
+	err = coll.FindOne(ctx, criteria).Decode(&obj)
 	if err != nil {
 		r.Log.Error(ctx, err.Error())
 
@@ -103,48 +108,20 @@ func (r *CriteriaImpl) FindAllCriteria(ctx context.Context, req repository.FindA
 	return objs, count, nil
 }
 
-// func (r *PlayerImpl) FindAllPlayerList(ctx context.Context, req *repository.FindAllPlayerListRequest) ([]*entity.Player, error) {
-// 	var objs []*entity.Player
+func (r *CriteriaImpl) DeleteCriteria(ctx context.Context, criteriaID string) error {
+	coll := r.MongoClient.Database(r.DbName).Collection(CollectionCriteria)
 
-// 	coll := r.MongoClient.Database(r.DbName).Collection(CollectionPlayer)
+	oid, err := primitive.ObjectIDFromHex(criteriaID)
+	if err != nil {
+		return fmt.Errorf("invalid criteria id: %w", err)
+	}
 
-// 	criteria := bson.M{}
+	criteria := bson.M{"_id": oid}
 
-// 	/* filter */
+	_, err = coll.DeleteOne(ctx, criteria)
+	if err != nil {
+		return err
+	}
 
-// 	// playerIDs
-// 	if req != nil {
-// 		// Check username first
-// 		var objectIDs []primitive.ObjectID
-// 		// Konversi array string ke array ObjectID
-// 		for _, id := range req.PlayerIDs {
-// 			objectID, err := primitive.ObjectIDFromHex(id)
-// 			if err != nil {
-// 				// Handle error jika string bukan ObjectID valid
-// 				log.Fatal(err)
-// 			}
-// 			objectIDs = append(objectIDs, objectID)
-// 		}
-
-// 		criteria["_id"] = bson.M{"$in": objectIDs}
-// 	}
-
-// 	sort := bson.M{"updated_at": -1}
-
-// 	findOpts := options.FindOptions{
-// 		Sort: sort,
-// 	}
-
-// 	cursor, err := coll.Find(ctx, criteria, &findOpts)
-// 	if err != nil {
-// 		r.Log.Error(ctx, err.Error())
-// 		return nil, err
-// 	}
-
-// 	if err := cursor.All(ctx, &objs); err != nil {
-// 		r.Log.Error(ctx, err.Error())
-// 		return nil, err
-// 	}
-
-// 	return objs, nil
-// }
+	return nil
+}

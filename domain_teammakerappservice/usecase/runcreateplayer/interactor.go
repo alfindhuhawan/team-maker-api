@@ -43,6 +43,7 @@ func (r *runCreatePlayerInteractor) Execute(ctx context.Context, req InportReque
 		Name:       req.Name,
 		PlayerCode: req.PlayerCode,
 		PlayerRank: req.PlayerRank,
+		Criteria:   req.Criteria,
 		CreatedAt:  req.TimeNow,
 		UpdatedAt:  req.TimeNow,
 		CreatedBy:  "-", // TODO : must change when auth have been created

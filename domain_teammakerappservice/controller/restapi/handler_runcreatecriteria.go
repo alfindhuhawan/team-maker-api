@@ -17,10 +17,10 @@ import (
 func (r *Controller) runCreateCriteriaHandler(inputPort runcreatecriteria.Inport) gin.HandlerFunc {
 
 	type request struct {
-		Title       string   `json:"title"`
-		Rank        []string `json:"rank"`
-		Rule        []string `json:"rule"`
-		Description string   `json:"description"`
+		Title string `json:"title"`
+		// Rank        []string `json:"rank"`
+		// Rule        []string `json:"rule"`
+		Description string `json:"description"`
 	}
 
 	type response struct {
@@ -41,8 +41,8 @@ func (r *Controller) runCreateCriteriaHandler(inputPort runcreatecriteria.Inport
 
 		var req runcreatecriteria.InportRequest
 		req.Title = jsonReq.Title
-		req.Rank = jsonReq.Rank
-		req.Rule = jsonReq.Rule
+		// req.Rank = jsonReq.Rank
+		// req.Rule = jsonReq.Rule
 		req.Description = jsonReq.Description
 		req.Now = time.Now()
 

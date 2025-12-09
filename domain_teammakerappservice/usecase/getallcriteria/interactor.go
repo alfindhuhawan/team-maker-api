@@ -1,4 +1,4 @@
-package getallplayer
+package getallcriteria
 
 import (
 	"context"
@@ -7,34 +7,33 @@ import (
 
 //go:generate mockery --name Outport -output mocks/
 
-type getAllPlayerInteractor struct {
+type getAllCriteriaInteractor struct {
 	outport Outport
 }
 
 // NewUsecase is constructor for create default implementation of usecase
 func NewUsecase(outputPort Outport) Inport {
-	return &getAllPlayerInteractor{
+	return &getAllCriteriaInteractor{
 		outport: outputPort,
 	}
 }
 
 // Execute the usecase
-func (r *getAllPlayerInteractor) Execute(ctx context.Context, req InportRequest) (*InportResponse, error) {
+func (r *getAllCriteriaInteractor) Execute(ctx context.Context, req InportRequest) (*InportResponse, error) {
 
 	res := &InportResponse{}
 
-	dataPlayers, count, err := r.outport.FindAllPlayer(ctx, repository.FindAllPlayerRequest{
-		Page:       req.Page,
-		Size:       req.Size,
-		Name:       req.Name,
-		PlayerRank: req.PlayerRank,
+	dataCriterias, count, err := r.outport.FindAllCriteria(ctx, repository.FindAllCriteriaRequest{
+		Page:  req.Page,
+		Size:  req.Size,
+		Title: req.Title,
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	res.Count = count
-	res.Items = dataPlayers
+	res.Items = dataCriterias
 
 	return res, nil
 }

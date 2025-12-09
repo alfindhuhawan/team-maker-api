@@ -6,18 +6,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
+	"team-maker-api/domain_teammakerappservice/usecase/rundeletecriteria"
 	"team-maker-api/shared/infrastructure/logger"
 	"team-maker-api/shared/infrastructure/util"
 	"team-maker-api/shared/model/payload"
 )
 
-// runCreateTeamHandler ...
-func (r *Controller) runCreateTeamHandler(inputPort runcreateteam.Inport) gin.HandlerFunc {
-
-	type request struct {
-		Command string `json:"command"`
-	}
+// runDeleteCriteriaHandler ...
+func (r *Controller) runDeleteCriteriaHandler(inputPort rundeletecriteria.Inport) gin.HandlerFunc {
 
 	type response struct {
 	}
@@ -28,15 +24,8 @@ func (r *Controller) runCreateTeamHandler(inputPort runcreateteam.Inport) gin.Ha
 
 		ctx := logger.SetTraceID(context.Background(), traceID)
 
-		var jsonReq request
-		if err := c.BindJSON(&jsonReq); err != nil {
-			r.Log.Error(ctx, err.Error())
-			c.JSON(http.StatusBadRequest, payload.NewErrorResponse(err, traceID))
-			return
-		}
-
-		var req runcreateteam.InportRequest
-		req.Command = jsonReq.Command
+		var req rundeletecriteria.InportRequest
+		req.CriteriaID = c.Param("criteria_id")
 
 		r.Log.Info(ctx, util.MustJSON(req))
 

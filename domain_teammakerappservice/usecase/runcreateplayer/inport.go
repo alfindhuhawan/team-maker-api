@@ -19,6 +19,7 @@ type InportRequest struct {
 	PlayerRank enum.PlayerRankEnum
 	TimeNow    time.Time
 	PlayerCode string
+	Criteria   []string
 }
 
 // InportResponse is response payload after running the usecase

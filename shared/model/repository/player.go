@@ -42,6 +42,7 @@ type UpdatePlayerRequest struct {
 	Name       string              `json:"name" bson:"name"`
 	PlayerRank enum.PlayerRankEnum `json:"player_rank" bson:"player_rank"`
 	PlayerCode string              `json:"player_code" bson:"player_code"`
+	Criteria   []string            `json:"criteria" bson:"criteria"`
 	UpdatedAt  time.Time           `json:"updated_at" bson:"updated_at"`
 	UpdatedBy  string              `json:"updated_by" bson:"updated_by"`
 }

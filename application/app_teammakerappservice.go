@@ -4,15 +4,18 @@ import (
 	"fmt"
 	"team-maker-api/domain_teammakerappservice/controller/restapi"
 	"team-maker-api/domain_teammakerappservice/gateway/prod"
+	"team-maker-api/domain_teammakerappservice/usecase/getallcriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/getallplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getallplayerlist"
 	"team-maker-api/domain_teammakerappservice/usecase/getalluser"
+	"team-maker-api/domain_teammakerappservice/usecase/getonecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreatecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
+	"team-maker-api/domain_teammakerappservice/usecase/rundeletecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/rundeleteplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runloginuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runsaveteam"
@@ -81,6 +84,9 @@ func NewAppTeamMaker() func() driver.RegistryContract {
 				GetAllPlayerListInport:  getallplayerlist.NewUsecase(datasource),
 				RunCreateCriteriaInport: runcreatecriteria.NewUsecase(datasource),
 				RunDeletePlayerInport:   rundeleteplayer.NewUsecase(datasource),
+				RunDeleteCriteriaInport: rundeletecriteria.NewUsecase(datasource),
+				GetAllCriteriaInport:    getallcriteria.NewUsecase(datasource),
+				GetOneCriteriaInport:    getonecriteria.NewUsecase(datasource),
 			},
 		}
 	}

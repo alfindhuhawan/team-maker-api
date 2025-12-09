@@ -21,6 +21,7 @@ func (r *Controller) runCreatePlayerHandler(inputPort runcreateplayer.Inport) gi
 		Name       string              `json:"name"`
 		PlayerRank enum.PlayerRankEnum `json:"player_rank"`
 		PlayerCode string              `json:"player_code"`
+		Criteria   []string            `json:"criteria"`
 	}
 
 	type response struct {
@@ -43,6 +44,7 @@ func (r *Controller) runCreatePlayerHandler(inputPort runcreateplayer.Inport) gi
 		req.Name = jsonReq.Name
 		req.PlayerRank = jsonReq.PlayerRank
 		req.PlayerCode = jsonReq.PlayerCode
+		req.Criteria = jsonReq.Criteria
 		req.TimeNow = time.Now()
 
 		r.Log.Info(ctx, util.MustJSON(req))

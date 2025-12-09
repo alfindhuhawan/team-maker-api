@@ -6,20 +6,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
+	"team-maker-api/domain_teammakerappservice/usecase/getonecriteria"
 	"team-maker-api/shared/infrastructure/logger"
 	"team-maker-api/shared/infrastructure/util"
+	"team-maker-api/shared/model/entity"
 	"team-maker-api/shared/model/payload"
 )
 
-// runCreateTeamHandler ...
-func (r *Controller) runCreateTeamHandler(inputPort runcreateteam.Inport) gin.HandlerFunc {
-
-	type request struct {
-		Command string `json:"command"`
-	}
+// getOneCriteriaHandler ...
+func (r *Controller) getOneCriteriaHandler(inputPort getonecriteria.Inport) gin.HandlerFunc {
 
 	type response struct {
+		Item *entity.Criteria `json:"item"`
 	}
 
 	return func(c *gin.Context) {
@@ -28,15 +26,8 @@ func (r *Controller) runCreateTeamHandler(inputPort runcreateteam.Inport) gin.Ha
 
 		ctx := logger.SetTraceID(context.Background(), traceID)
 
-		var jsonReq request
-		if err := c.BindJSON(&jsonReq); err != nil {
-			r.Log.Error(ctx, err.Error())
-			c.JSON(http.StatusBadRequest, payload.NewErrorResponse(err, traceID))
-			return
-		}
-
-		var req runcreateteam.InportRequest
-		req.Command = jsonReq.Command
+		var req getonecriteria.InportRequest
+		req.CriteriaID = c.Param("criteria_id")
 
 		r.Log.Info(ctx, util.MustJSON(req))
 
@@ -48,7 +39,7 @@ func (r *Controller) runCreateTeamHandler(inputPort runcreateteam.Inport) gin.Ha
 		}
 
 		var jsonRes response
-		_ = res
+		jsonRes.Item = res.Item
 
 		r.Log.Info(ctx, util.MustJSON(jsonRes))
 		c.JSON(http.StatusOK, payload.NewSuccessResponse(jsonRes, traceID))

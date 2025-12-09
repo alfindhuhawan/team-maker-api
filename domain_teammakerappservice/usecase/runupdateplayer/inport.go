@@ -19,6 +19,7 @@ type InportRequest struct {
 	Name       string
 	PlayerRank enum.PlayerRankEnum
 	PlayerCode string
+	Criteria   []string
 	TimeNow    time.Time
 }
 

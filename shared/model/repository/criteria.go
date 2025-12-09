@@ -14,7 +14,11 @@ type FindAllCriteriaRepo interface {
 }
 
 type FindOneCriteriaRepo interface {
-	FindOneCriteria(ctx context.Context, id string) (*entity.Criteria, error)
+	FindOneCriteria(ctx context.Context, criteriaID string) (*entity.Criteria, error)
+}
+
+type DeleteCriteriaRepo interface {
+	DeleteCriteria(ctx context.Context, criteriaID string) error
 }
 
 type FindAllCriteriaRequest struct {

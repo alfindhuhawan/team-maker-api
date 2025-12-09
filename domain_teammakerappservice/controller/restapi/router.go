@@ -1,15 +1,18 @@
 package restapi
 
 import (
+	"team-maker-api/domain_teammakerappservice/usecase/getallcriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/getallplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getallplayerlist"
 	"team-maker-api/domain_teammakerappservice/usecase/getalluser"
+	"team-maker-api/domain_teammakerappservice/usecase/getonecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/getoneuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreatecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateteam"
 	"team-maker-api/domain_teammakerappservice/usecase/runcreateuser"
+	"team-maker-api/domain_teammakerappservice/usecase/rundeletecriteria"
 	"team-maker-api/domain_teammakerappservice/usecase/rundeleteplayer"
 	"team-maker-api/domain_teammakerappservice/usecase/runloginuser"
 	"team-maker-api/domain_teammakerappservice/usecase/runsaveteam"
@@ -43,6 +46,9 @@ type Controller struct {
 	GetAllPlayerListInport  getallplayerlist.Inport
 	RunCreateCriteriaInport runcreatecriteria.Inport
 	RunDeletePlayerInport   rundeleteplayer.Inport
+	RunDeleteCriteriaInport rundeletecriteria.Inport
+	GetAllCriteriaInport    getallcriteria.Inport
+	GetOneCriteriaInport    getonecriteria.Inport
 }
 
 // RegisterRouter registering all the router
@@ -89,6 +95,9 @@ func (r *Controller) RegisterRouter() {
 
 	// Criteria
 	public.POST("/criteria", r.authorized(), r.runCreateCriteriaHandler(r.RunCreateCriteriaInport))
+	public.DELETE("/criteria/:criteria_id", r.authorized(), r.runDeleteCriteriaHandler(r.RunDeleteCriteriaInport))
+	public.GET("/criteria", r.authorized(), r.getAllCriteriaHandler(r.GetAllCriteriaInport))
+	public.GET("/criteria/:criteria_id", r.authorized(), r.getOneCriteriaHandler(r.GetOneCriteriaInport))
 
 	// login
 	public.POST("/login", r.authorized(), r.runLoginUserHandler(r.RunLoginUserInport))

@@ -3,28 +3,28 @@ package restapi
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 
-	"team-maker-api/domain_teammakerappservice/usecase/runupdateplayer"
+	"team-maker-api/domain_teammakerappservice/usecase/getallcriteria"
 	"team-maker-api/shared/infrastructure/logger"
 	"team-maker-api/shared/infrastructure/util"
-	"team-maker-api/shared/model/enum"
+	"team-maker-api/shared/model/entity"
 	"team-maker-api/shared/model/payload"
 )
 
-// runUpdatePlayerHandler ...
-func (r *Controller) runUpdatePlayerHandler(inputPort runupdateplayer.Inport) gin.HandlerFunc {
+// getAllCriteriaHandler ...
+func (r *Controller) getAllCriteriaHandler(inputPort getallcriteria.Inport) gin.HandlerFunc {
 
 	type request struct {
-		Name       string              `json:"name"`
-		PlayerRank enum.PlayerRankEnum `json:"player_rank"`
-		PlayerCode string              `json:"player_code"`
-		Criteria   []string            `json:"criteria"`
+		Page  int64  `form:"page,omitempty,default=0"`
+		Size  int64  `form:"size,omitempty,default=0"`
+		Title string `form:"title,omitempty,default=0"`
 	}
 
 	type response struct {
+		Count int64             `json:"count"`
+		Items []entity.Criteria `json:"items"`
 	}
 
 	return func(c *gin.Context) {
@@ -34,18 +34,16 @@ func (r *Controller) runUpdatePlayerHandler(inputPort runupdateplayer.Inport) gi
 		ctx := logger.SetTraceID(context.Background(), traceID)
 
 		var jsonReq request
-		if err := c.BindJSON(&jsonReq); err != nil {
+		if err := c.Bind(&jsonReq); err != nil {
 			r.Log.Error(ctx, err.Error())
 			c.JSON(http.StatusBadRequest, payload.NewErrorResponse(err, traceID))
 			return
 		}
 
-		var req runupdateplayer.InportRequest
-		req.PlayerID = c.Param("player_id")
-		req.Name = jsonReq.Name
-		req.PlayerRank = jsonReq.PlayerRank
-		req.PlayerCode = jsonReq.PlayerCode
-		req.TimeNow = time.Now()
+		var req getallcriteria.InportRequest
+		req.Page = jsonReq.Page
+		req.Size = jsonReq.Size
+		req.Title = jsonReq.Title
 
 		r.Log.Info(ctx, util.MustJSON(req))
 
@@ -57,7 +55,8 @@ func (r *Controller) runUpdatePlayerHandler(inputPort runupdateplayer.Inport) gi
 		}
 
 		var jsonRes response
-		_ = res
+		jsonRes.Count = res.Count
+		jsonRes.Items = res.Items
 
 		r.Log.Info(ctx, util.MustJSON(jsonRes))
 		c.JSON(http.StatusOK, payload.NewSuccessResponse(jsonRes, traceID))
