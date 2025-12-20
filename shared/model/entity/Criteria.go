@@ -7,8 +7,9 @@ import (
 )
 
 type Criteria struct {
-	ID    primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Title string             `json:"title" bson:"title"`
+	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Title        string             `json:"title" bson:"title"`
+	TitleAliases []string           `json:"title_aliases" bson:"title_aliases"`
 	// Rank        []string      `json:"rank" bson:"rank"`
 	// Rule        []string      `json:"rule" bson:"rule"`
 	Description string    `json:"description" bson:"description"`

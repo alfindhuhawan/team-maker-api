@@ -125,3 +125,26 @@ func (r *CriteriaImpl) DeleteCriteria(ctx context.Context, criteriaID string) er
 
 	return nil
 }
+
+func (r *CriteriaImpl) UpdateCriteria(ctx context.Context, userID string, obj *repository.UpdatePlayerRequest) error {
+	coll := r.MongoClient.Database(r.DbName).Collection(CollectionPlayer)
+
+	// convert user id to string
+	oid, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return fmt.Errorf("invalid player id: %w", err)
+	}
+
+	criteria := bson.M{}
+	criteria["_id"] = oid
+
+	updated := bson.M{}
+	updated["$set"] = obj
+
+	_, err = coll.UpdateOne(ctx, criteria, updated)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

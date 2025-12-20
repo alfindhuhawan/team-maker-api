@@ -13,11 +13,11 @@ type Inport interface {
 
 // InportRequest is request payload to run the usecase
 type InportRequest struct {
+	Command string
 	// MatchmakingType enum.MatchmakingTypeEnum
 	// TotalTeam       int
 	// MaxPlayer       int
 	// PlayerIDs       []string
-	Command string
 }
 
 // InportResponse is response payload after running the usecase

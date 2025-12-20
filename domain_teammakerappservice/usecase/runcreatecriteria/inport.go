@@ -14,7 +14,8 @@ type Inport interface {
 
 // InportRequest is request payload to run the usecase
 type InportRequest struct {
-	Title string
+	Title        string
+	TitleAliases []string
 	// Rank        []string
 	// Rule        []string
 	Description string

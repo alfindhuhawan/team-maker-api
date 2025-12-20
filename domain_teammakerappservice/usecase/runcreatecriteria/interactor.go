@@ -30,7 +30,8 @@ func (r *runCreateCriteriaInteractor) Execute(ctx context.Context, req InportReq
 
 	// save criteria
 	err = r.outport.SaveCriteria(ctx, &entity.Criteria{
-		Title: req.Title,
+		Title:        req.Title,
+		TitleAliases: req.TitleAliases,
 		// Rank:        req.Rank,
 		// Rule:        req.Rule,
 		Description: req.Description,
